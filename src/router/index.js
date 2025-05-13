@@ -39,6 +39,18 @@ export const constantRoutes = [
         name: "targeting",
         meta: { title: "靶点热图", icon: "home" },
       },
+      {
+        path: "/dataset",
+        component: () => import("@/views/dataset/index"),
+        name: "dataset",
+        meta: { title: "数据集", icon: "home" },
+      },
+      {
+        path: "/scatterPlot",
+        component: () => import("@/views/scatterPlot/index"),
+        name: "scatterPlot",
+        meta: { title: "散点图", icon: "home" },
+      },
     ],
   },
 
