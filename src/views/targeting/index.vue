@@ -1,5 +1,7 @@
 <template>
   <div class="heatmap-container" v-loading="loading">
+    <LeftMenu />
+
     <table class="heatmap-table">
       <thead>
         <tr class="thead-group">
@@ -53,7 +55,11 @@
 </template>
 
 <script>
+import LeftMenu from '@/components/leftMenu/index.vue';
 export default {
+  components: {
+    LeftMenu
+  },
   name: 'HeatMap',
   data() {
     return {
@@ -85,13 +91,13 @@ export default {
   },
   methods: {
     getTargetingData() {
-      const id = {
+      const params = {
         "input_value": this.id || "MONDO_0008903",
         "output_type": "text",
         "input_type": "text"
       }
       this.loading = true
-      this.http.post('http://192.168.0.12:7860/api/v1/run/d65739d6-7f86-4816-8cba-27e9a6f12255', id).then((res) => {
+      this.http.post('http://192.168.0.12:7860/api/v1/run/d65739d6-7f86-4816-8cba-27e9a6f12255', params).then((res) => {
         const fixedJsonString = res.outputs[0]?.outputs[0]?.outputs?.message?.message.replaceAll(/:\s*NaN/g, ':null');
         const result = JSON.parse(fixedJsonString).merged_result
         this.transformGeneDataToHeatmapFormat(result)
@@ -155,6 +161,9 @@ export default {
 
 <style scoped>
 .heatmap-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 24px 0 82px 24px;
   /* margin-top: 20px; */
   height: 100%;
   padding: 16px;

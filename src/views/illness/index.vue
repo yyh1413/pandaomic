@@ -1,5 +1,6 @@
 <template>
-  <div class="container">
+  <div class="container" v-loading="loading">
+    <LeftMenu />
     <!-- 疾病标题和描述 -->
     <div class="card full-width">
       <h1 class="disease-title">Lung Cancer</h1>
@@ -219,7 +220,7 @@
         <!-- 相关数据集列表 -->
         <div class="card datasets-card">
           <div class="datasets-header">
-            <h2>1615 other related Datasets</h2>
+            <h2>{{ table.length }} other related Datasets</h2>
             <a href="#">VIEW ALL ›</a>
           </div>
 
@@ -229,84 +230,21 @@
                 <th>NAME</th>
                 <th>MANUAL QA</th>
                 <th>SAMPLES</th>
-                <th>CASE</th>
-                <th>CONTROL</th>
+                <th>SPECIES</th>
+                <!-- <th>CONTROL</th> -->
                 <th>PUBLISHED</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>GSE85534</td>
+              <tr v-for="(dataset, index) in table" :key="index">
+                <td>{{ dataset.accession }}</td>
                 <td><span class="manual-qa-check">✓</span></td>
-                <td class="number-cell">906</td>
-                <td class="number-cell">0</td>
-                <td class="number-cell">328</td>
-                <td class="date-cell">2017-02-13</td>
+                <td class="number-cell">{{ dataset.samples }}</td>
+                <td class="number-cell">{{ dataset.species.toString() }}</td>
+                <!-- <td class="number-cell">{{dataset.accession}}</td> -->
+                <td class="date-cell">{{ dataset.published }}</td>
               </tr>
-              <tr>
-                <td>GSE66499</td>
-                <td><span class="manual-qa-check">✓</span></td>
-                <td class="number-cell">680</td>
-                <td class="number-cell">490</td>
-                <td class="number-cell">190</td>
-                <td class="date-cell">2015-05-17</td>
-              </tr>
-              <tr>
-                <td>GDC-TCGA-LUAD</td>
-                <td></td>
-                <td class="number-cell">1129</td>
-                <td class="number-cell">1019</td>
-                <td class="number-cell">110</td>
-                <td class="date-cell"></td>
-              </tr>
-              <tr>
-                <td>GDC-TCGA-LUSC</td>
-                <td></td>
-                <td class="number-cell">574</td>
-                <td class="number-cell">515</td>
-                <td class="number-cell">59</td>
-                <td class="date-cell"></td>
-              </tr>
-              <tr>
-                <td>GDC-TCGA-LUAD-M</td>
-                <td></td>
-                <td class="number-cell">550</td>
-                <td class="number-cell">501</td>
-                <td class="number-cell">49</td>
-                <td class="date-cell"></td>
-              </tr>
-              <tr>
-                <td>GSE203024</td>
-                <td></td>
-                <td class="number-cell">2845</td>
-                <td class="number-cell">1045</td>
-                <td class="number-cell">0</td>
-                <td class="date-cell">2024-08-31</td>
-              </tr>
-              <tr>
-                <td>CCLE-GeneExp</td>
-                <td></td>
-                <td class="number-cell">1406</td>
-                <td class="number-cell">0</td>
-                <td class="number-cell">0</td>
-                <td class="date-cell"></td>
-              </tr>
-              <tr>
-                <td>GSE111894</td>
-                <td><span class="manual-qa-check">✓</span></td>
-                <td class="number-cell">1008</td>
-                <td class="number-cell">1008</td>
-                <td class="number-cell">0</td>
-                <td class="date-cell">2019-06-13</td>
-              </tr>
-              <tr>
-                <td>GSE68950</td>
-                <td><span class="manual-qa-check">✓</span></td>
-                <td class="number-cell">798</td>
-                <td class="number-cell">758</td>
-                <td class="number-cell">0</td>
-                <td class="date-cell">2015-05-16</td>
-              </tr>
+
             </tbody>
           </table>
         </div>
@@ -316,8 +254,18 @@
 </template>
 
 <script>
+import LeftMenu from '@/components/leftMenu/index.vue';
 export default {
-
+  data() {
+    return {
+      loading: false,
+      // 数据集列表
+      table: []
+    }
+  },
+  components: {
+    LeftMenu
+  },
   mounted() {
     document.addEventListener('DOMContentLoaded', function () {
       const chartOptions = {
@@ -528,6 +476,29 @@ export default {
         observer.observe(el);
       });
     });
+  },
+  created() {
+    this.id = this.$route.query.id
+    this.getIllnessData();
+  },
+  methods: {
+    getIllnessData() {
+      this.loading = true;
+
+      const params = {
+        "input_value": this.id || "MONDO_0008903",
+      }
+      this.http.post('http://192.168.0.12:7860/api/v1/run/cdb32fb7-a022-45ea-a40d-998575398371', params).then(res => {
+        this.table = this.parseApiResponse(res)
+        console.log('this.table', this.table);
+
+      }).catch(error => {
+        console.error(error);
+      }).finally(() => {
+        this.loading = false;
+
+      })
+    }
   }
 }
 </script>

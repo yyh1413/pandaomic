@@ -3,19 +3,19 @@
     <!-- 顶部导航栏 -->
     <div class="navbar">
       <div style="display: flex;align-items: center;">
-        <div class="logo">
+        <div class="logo" @click="$router.push('/')">
           <img src="~@/assets/logo.png" class="logo_img" />
         </div>
-        <Menu />
-      <!-- <div class="logo">
+        <!-- <Menu /> -->
+        <!-- <div class="logo">
         <img src="~@/assets/logo.png" class="logo_img"  @click="$router.push('/')"/>
       </div> -->
-    </div>
+      </div>
       <Avatar />
 
-  
 
-  </div>
+
+    </div>
   </div>
 </template>
 
@@ -66,7 +66,7 @@ export default {
   display: flex;
   align-items: center;
 
-  .logo_img { 
+  .logo_img {
     cursor: pointer;
     width: 124px;
     height: 30px;

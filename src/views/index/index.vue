@@ -20,7 +20,7 @@
           <div class="results-container">
             <div class="result-column">
               <h2 class="column-title">{{ searchData.diseases.title }}</h2>
-              <div class="result-item" v-for="item in searchData.diseases.items" :key="item.name" @click="$router.push('/targeting?id=' + item.id)">
+              <div class="result-item" v-for="item in searchData.diseases.items" :key="item.name" @click="$router.push('/illness?id=' + item.id)">
                 <div class="result-item-title">{{ item.name }}</div>
                 <div class="result-item-description">{{ item.description }}</div>
                 <div class="dataset-count">{{ item.datasetCount }}</div>
