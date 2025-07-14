@@ -1,123 +1,203 @@
-import Vue from "vue";
-import Router from "vue-router";
-/* Layout */
-import Layout from "@/layout";
+import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 
-// 子页面路由组件
+// 导入布局组件
+const Layout = () => import('@/components/layout/Layout.vue')
 
-Vue.use(Router);
+// 页面组件
+const Home = () => import('@/views/Home.vue')
+const Login = () => import('@/views/Login.vue')
+const ForgotPassword = () => import('@/views/ForgotPassword.vue')
+const SignUp = () => import('@/views/SignUp.vue')
+const Upload = () => import('@/views/Upload.vue')
+const DataManager = () => import('@/views/DataManager.vue')
+const Summary = () => import('@/views/Summary.vue')
+const TargetId = () => import('@/views/TargetId.vue')
+const Datasets = () => import('@/views/Datasets.vue')
+const Knowledge = () => import('@/views/Knowledge.vue')
+const Leaders = () => import('@/views/Leaders.vue')
+const Grants = () => import('@/views/Grants.vue')
+const Plan = () => import('@/views/Plan.vue')
+const Subscription = () => import('@/views/Subscription.vue')
+const Manual = () => import('@/views/Manual.vue')
+const PDFReport = () => import('@/views/PDFReport.vue')
 
-
-// 公共路由
-export const constantRoutes = [
+// 路由配置
+const routes = [
   {
-    path: "",
+    path: '/login',
+    name: 'Login',
+    component: Login,
+    meta: {
+      title: '登录',
+      requiresAuth: false,
+      hideLayout: true
+    }
+  },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: ForgotPassword,
+    meta: {
+      title: '忘记密码',
+      requiresAuth: false,
+      hideLayout: true
+    }
+  },
+  {
+    path: '/signup',
+    name: 'SignUp',
+    component: SignUp,
+    meta: {
+      title: '注册',
+      requiresAuth: false,
+      hideLayout: true
+    }
+  },
+  {
+    path: '/',
     component: Layout,
-    redirect: "/",
+    redirect: '/home',
     children: [
       {
-        path: "/",
-        component: () => import("@/views/index"),
-        name: "Index",
-        meta: { title: "首页", icon: "home" },
+        path: 'home',
+        name: 'Home',
+        component: Home,
+        meta: {
+          title: '首页',
+          requiresAuth: false
+        }
       },
       {
-        path: "/illness",
-        component: () => import("@/views/illness/index"),
-        name: "illness",
-        meta: { title: "疾病", icon: "home" },
+        path: 'upload',
+        name: 'Upload',
+        component: Upload,
+        meta: {
+          title: '数据上传',
+          requiresAuth: true
+        }
       },
       {
-        path: "/gene",
-        component: () => import("@/views/gene/index"),
-        name: "gene",
-        meta: { title: "基因-疾病", icon: "home" },
+        path: 'manager',
+        name: 'DataManager',
+        component: DataManager,
+        meta: {
+          title: '数据管理',
+          requiresAuth: true
+        }
       },
       {
-        path: "/targeting",
-        component: () => import("@/views/targeting/index"),
-        name: "targeting",
-        meta: { title: "靶点热图", icon: "home" },
+        path: 'summary',
+        name: 'Summary',
+        component: Summary,
+        meta: {
+          title: '总览',
+          requiresAuth: true
+        }
       },
       {
-        path: "/dataset",
-        component: () => import("@/views/dataset/index"),
-        name: "dataset",
-        meta: { title: "数据集", icon: "home" },
+        path: 'target-id',
+        name: 'TargetId',
+        component: TargetId,
+        meta: {
+          title: '靶点识别',
+          requiresAuth: true
+        }
       },
       {
-        path: "/scatterPlot",
-        component: () => import("@/views/scatterPlot/index"),
-        name: "scatterPlot",
-        meta: { title: "散点图", icon: "home" },
+        path: 'datasets',
+        name: 'Datasets',
+        component: Datasets,
+        meta: {
+          title: '数据集',
+          requiresAuth: true
+        }
       },
-    ],
-  },
+      {
+        path: 'knowledge',
+        name: 'Knowledge',
+        component: Knowledge,
+        meta: {
+          title: '知识图谱',
+          requiresAuth: true
+        }
+      },
+      {
+        path: 'leaders',
+        name: 'Leaders',
+        component: Leaders,
+        meta: {
+          title: '意见领袖',
+          requiresAuth: true
+        }
+      },
+      {
+        path: 'grants',
+        name: 'Grants',
+        component: Grants,
+        meta: {
+          title: '研究资助',
+          requiresAuth: true
+        }
+      },
+      {
+        path: 'plan',
+        name: 'Plan',
+        component: Plan,
+        meta: {
+          title: '当前计划',
+          requiresAuth: true
+        }
+      },
+      {
+        path: 'subscription',
+        name: 'Subscription',
+        component: Subscription,
+        meta: {
+          title: '订阅管理',
+          requiresAuth: true
+        }
+      },
+      {
+        path: 'manual',
+        name: 'Manual',
+        component: Manual,
+        meta: {
+          title: '用户手册',
+          requiresAuth: false
+        }
+      },
+      {
+        path: 'pdf-report/:reportId',
+        name: 'PDFReport',
+        component: PDFReport,
+        meta: {
+          title: 'PDF报告',
+          requiresAuth: true
+        }
+      }
+    ]
+  }
+]
 
-  {
-    path: "/redirect",
-    component: Layout,
-    hidden: true,
-    children: [
-      {
-        path: "/redirect/:path(.*)",
-        component: () => import("@/views/redirect"),
-      },
-    ],
-  },
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+})
 
-  {
-    path: "/login",
-    component: () => import("@/views/login/index"),
-    hidden: true,
-  },
-  {
-    path: "/register",
-    component: () => import("@/views/register/index"),
-    hidden: true,
-  },
-  {
-    path: "/retrievePassword",
-    component: () => import("@/views/register/retrievePassword"),
-    hidden: true,
-  },
-  {
-    path: "/bind/phone",
-    component: () => import("@/views/register/bindPhone"),
-    hidden: true,
-  },
-  {
-    path: "/404",
-    component: () => import("@/views/error/404"),
-    hidden: true,
-  },
-  {
-    path: "/401",
-    component: () => import("@/views/error/401"),
-    hidden: true,
-  },
-  {
-    path: '/agreement',
-    name: 'AgreementList',
-    component: () => import("@/views/agreement/agreement.vue"),
-  },
+// 路由守卫
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore()
+  
+  // 设置页面标题
+  document.title = to.meta.title ? `${to.meta.title} - Y150` : 'Y150'
+  
+  // 检查是否需要认证
+  if (to.meta.requiresAuth && !userStore.isLoggedIn) {
+    next('/login')
+  } else {
+    next()
+  }
+})
 
-];
-
-// 防止连续点击多次路由报错
-let routerPush = Router.prototype.push;
-let routerReplace = Router.prototype.replace;
-// push
-Router.prototype.push = function push(location) {
-  return routerPush.call(this, location).catch((err) => err);
-};
-// replace
-Router.prototype.replace = function push(location) {
-  return routerReplace.call(this, location).catch((err) => err);
-};
-
-export default new Router({
-  mode: "history", // 去掉url中的#
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes,
-});
+export default router 
