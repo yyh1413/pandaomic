@@ -5,22 +5,25 @@ import { useUserStore } from '@/stores/user'
 const Layout = () => import('@/components/layout/Layout.vue')
 
 // 页面组件
-const Home = () => import('@/views/Home.vue')
-const Login = () => import('@/views/Login.vue')
-const ForgotPassword = () => import('@/views/ForgotPassword.vue')
-const SignUp = () => import('@/views/SignUp.vue')
-const Upload = () => import('@/views/Upload.vue')
-const DataManager = () => import('@/views/DataManager.vue')
-const Summary = () => import('@/views/Summary.vue')
-const TargetId = () => import('@/views/TargetId.vue')
-const Datasets = () => import('@/views/Datasets.vue')
-const Knowledge = () => import('@/views/Knowledge.vue')
-const Leaders = () => import('@/views/Leaders.vue')
-const Grants = () => import('@/views/Grants.vue')
-const Plan = () => import('@/views/Plan.vue')
-const Subscription = () => import('@/views/Subscription.vue')
-const Manual = () => import('@/views/Manual.vue')
-const PDFReport = () => import('@/views/PDFReport.vue')
+const Home = () => import('@/views/home/Home.vue')
+const Login = () => import('@/views/auth/Login.vue')
+const ForgotPassword = () => import('@/views/auth/ForgotPassword.vue')
+const SignUp = () => import('@/views/auth/SignUp.vue')
+const Upload = () => import('@/views/home/Upload.vue')
+const DataManager = () => import('@/views/home/DataManager.vue')
+const Summary = () => import('@/views/home/Summary.vue')
+const TargetId = () => import('@/views/home/TargetId.vue')
+const Datasets = () => import('@/views/home/Datasets.vue')
+const Knowledge = () => import('@/views/home/Knowledge.vue')
+const Leaders = () => import('@/views/home/Leaders.vue')
+const Grants = () => import('@/views/home/Grants.vue')
+const Plan = () => import('@/views/home/Plan.vue')
+const Subscription = () => import('@/views/home/Subscription.vue')
+const Manual = () => import('@/views/home/Manual.vue')
+const PDFReport = () => import('@/views/home/PDFReport.vue')
+
+// 疾病分析页面
+const DiseaseAnalysis = () => import('@/views/disease/index.vue')
 
 // 路由配置
 const routes = [
@@ -177,6 +180,16 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: '/disease',
+    name: 'DiseaseAnalysis',
+    component: DiseaseAnalysis,
+    meta: {
+      title: '疾病分析',
+      requiresAuth: false,
+      hideLayout: true
+    }
   }
 ]
 
