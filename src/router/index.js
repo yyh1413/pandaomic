@@ -192,6 +192,7 @@ router.beforeEach((to, from, next) => {
   // 设置页面标题
   document.title = to.meta.title ? `${to.meta.title} - Y150` : 'Y150'
   
+  return next()
   // 检查是否需要认证
   if (to.meta.requiresAuth && !userStore.isLoggedIn) {
     next('/login')

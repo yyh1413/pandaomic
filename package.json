@@ -1,7 +1,7 @@
 {
-  "name": "egg",
+  "name": "Y150",
   "version": "1.0.0",
-  "description": "阔跃KEGG System with Element Plus",
+  "description": "Y150",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -24,6 +24,7 @@
   "license": "MIT",
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.0",
+    "@fortawesome/fontawesome-free": "^6.7.2",
     "ali-oss": "^6.23.0",
     "axios": "^1.6.0",
     "dayjs": "^1.11.0",

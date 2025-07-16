@@ -4,7 +4,7 @@ import router from '@/router'
 
 // 创建axios实例
 const service = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL ,
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 1000000000,
   headers: {
     'Content-Type': 'application/json;charset=UTF-8'
@@ -17,14 +17,6 @@ let loadingInstance = null
 // 请求拦截器
 service.interceptors.request.use(
   config => {
-    // 显示loading
-    if (config.loading !== false) {
-      loadingInstance = ElLoading.service({
-        lock: true,
-        text: '加载中...',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
-    }
 
     // 添加token
     const token = localStorage.getItem('token')
@@ -61,7 +53,7 @@ service.interceptors.response.use(
     }
 
     const { code, message, data } = response.data
-    
+
     return { data, message, result: response.data }
     // 根据业务状态码处理
     if (code === 200) {
@@ -77,10 +69,6 @@ service.interceptors.response.use(
     }
   },
   error => {
-    // 关闭loading
-    if (loadingInstance) {
-      loadingInstance.close()
-    }
 
     let message = '请求失败'
 
@@ -170,4 +158,4 @@ export const upload = (url, formData, config = {}) => {
   })
 }
 
-export default service 
+export default { get, post, put, del, upload } 
